@@ -1,8 +1,8 @@
-use error_chain::{error_chain, example_generated::ResultExt, mock::ResultExt};
+use error_chain::error_chain;
 use serde::Deserialize;
 use structopt::StructOpt;
 
-const WEEPI:&str="https://api.covidapi.com/summary";
+const WEEPI:&str="https://api.covid19api.com/summary";
 
 const COUNTRIES: [&str; 248] = [
 	"barbados",
@@ -277,6 +277,7 @@ struct Country {
     country:String,
     country_code:String,
     slug:String,
+    total_confirmed:u64,
     new_confirmed:u64,
     new_deaths:u64,
     total_deaths:u64,
@@ -317,7 +318,36 @@ fn print_global_summary(summary : GlobalSummary)
      println!("total recovered :{}",summary.total_recovered);
 }
 fn print_country_summary(country : &Country){
-   
+     println!("<-<-<-<- {} COVWEED-BC CASES SUMMARY ->->->->",country.country.to_uppercase());
+    println!("neu CovWEED cases todAY :{}",country.new_confirmed);
+    println!("totaL CovWEED cases todAY :{}",country.total_confirmed);
+    println!("new dead peeps  todAy :[ :{}",country.new_deaths);
+    println!("total peeps in dead land :] :{}",country.total_deaths);
+     println!("recovered like today  :{}",country.new_recovered);
+     println!("total recovered :{}",country.total_recovered);  
 }
 
-fn main(){}
+fn main(){
+
+let args = Cli::from_args();
+let location_arg = &args.location[..];
+let summary_data = fetch_data().unwrap();
+if location_arg == "global"{
+    let global_summary: GlobalSummary=summary_data.global;
+    print_global_summary(global_summary);
+}
+else if COUNTRIES.iter().any(|&slug| slug == location_arg){
+    let country_summary:&Country = summary_data
+        .countries
+        .iter()
+        .find(|&country| country.slug == location_arg)
+        .unwrap();
+    print_country_summary(country_summary);
+
+
+}
+else{
+    print!("PLEASE PROVIDE VALID GLOBAL OR COUNTRY CMD :[")
+}
+
+}
