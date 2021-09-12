@@ -22,9 +22,13 @@ covweed global
 covweed india
 ```
 
-## As of 13/09/21 
+### As of 13/09/21 
 
 9.57% of all deaths from India
 
 ![](s.png)
 
+<div align="center">
+![](https://media.giphy.com/media/XcAZwgzbabxKv4S2oJ/giphy.gif?cid=ecf05e47pglm0onz1nu6uh6mtkm6m65zt8xpyqbmle0kt2s9&rid=giphy.gif&ct=g)
+
+<div>
