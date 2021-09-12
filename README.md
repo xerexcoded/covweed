@@ -2,16 +2,16 @@
 
 
 ## To use :
-### 1.) Clone the repo and build in release mode
+### 1. Clone the repo and build in release mode
 
 ```bash 
 cd covweed && cargo build --release
 ```
-### 2.)Add to path 
+### 2. Add to path 
 ```bash
 cp target/release/covweed  ~/.local/bin/covweed
 ```
-### 3.)Run the executable , make sure to have cargo v1.54+
+### 3. Run the executable , make sure to have cargo v1.54+
 
 * For Global
 ```bash  
