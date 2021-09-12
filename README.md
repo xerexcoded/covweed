@@ -7,7 +7,7 @@
 ```bash 
 cd covweed && cargo build --release
 ```
-### 2. Add to path 🪃
+### 2. Add to path 🛣️
 ```bash
 cp target/release/covweed  ~/.local/bin/covweed
 ```
