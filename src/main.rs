@@ -1,8 +1,8 @@
-use error_chain::error_chain;
+use error_chain::{error_chain, example_generated::ResultExt, mock::ResultExt};
 use serde::Deserialize;
 use structopt::StructOpt;
 
-const weepi:&str="https://api.covidapi.com/summary";
+const WEEPI:&str="https://api.covidapi.com/summary";
 
 const COUNTRIES: [&str; 248] = [
 	"barbados",
@@ -255,7 +255,69 @@ const COUNTRIES: [&str; 248] = [
 	"sudan",
 ];
 
-
-fn main() {
-    println!("Hello, world!");
+error_chain!{
+    foreign_links{
+        Io(std::io::Error);
+        HttpRequest(reqwest::Error);
+    }
 }
+#[derive(Deserialize,Debug)]
+#[serde(rename_all="PascalCase")]
+struct GlobalSummary{
+    new_confirmed:u64,
+    total_confirmed:u64,
+    total_deaths:u64,
+    new_deaths:u64,
+    new_recovered:u64,
+    total_recovered:u64,
+}
+#[derive(Deserialize,Debug)]
+#[serde(rename_all="PascalCase")]
+struct Country {
+    country:String,
+    country_code:String,
+    slug:String,
+    new_confirmed:u64,
+    new_deaths:u64,
+    total_deaths:u64,
+    new_recovered:u64,
+    total_recovered:u64,
+    date:String,
+}
+
+#[derive(Deserialize,Debug)]
+#[serde(rename_all="PascalCase")]
+
+struct Response {
+    message:String,
+    global:GlobalSummary,
+    countries:Vec<Country>,
+    date:String,
+
+}
+#[derive(StructOpt)]
+struct Cli {
+    location:String,
+} 
+
+fn fetch_data() -> Result<Response> {
+    let res = reqwest::blocking::get(WEEPI)?;
+
+    let json_response = res.json::<Response>().unwrap();
+    Ok(json_response)
+}
+fn print_global_summary(summary : GlobalSummary)
+{
+    println!("<-<-<-<- Global COVWEED-BC CASES SUMMARY ->->->->");
+    println!("neu CovWEED cases todAY :{}",summary.new_confirmed);
+    println!("totaL CovWEED cases todAY :{}",summary.total_confirmed);
+    println!("new dead peeps  todAy :[ :{}",summary.new_deaths);
+    println!("total peeps in dead land :] :{}",summary.total_deaths);
+     println!("recovered like today  :{}",summary.new_recovered);
+     println!("total recovered :{}",summary.total_recovered);
+}
+fn print_country_summary(country : &Country){
+   
+}
+
+fn main(){}
